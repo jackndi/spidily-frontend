@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import "./App.css";
+import { useRetrieveTokenMutation } from "./services/auth/tokenAPI";
 
 function App() {
+  const [retrieveToken, { isLoading, data, error }] =
+    useRetrieveTokenMutation();
+
+  useEffect(() => {
+    retrieveToken({ username: "jack", password: "jackpass" });
+  }, [retrieveToken]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Hello World</h1>
+
+      {isLoading && <h1>Is Loading...</h1>}
+      {error && <h1>Is error...{JSON.stringify(error)}</h1>}
+      {data && <p> {JSON.stringify(data)}</p>}
     </div>
   );
 }
