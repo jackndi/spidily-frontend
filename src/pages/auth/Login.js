@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useRetrieveTokenMutation } from "../../services/auth/tokenAPI";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../../features/auth/tokenSlice";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import config from "../../config";
 
 function Login() {
@@ -14,41 +14,48 @@ function Login() {
   const autToken = useSelector((state) => state.token);
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  // set token local storage
-  if (isSuccess) {
-    // set the token in the state
-    dispatch(setToken(data));
+  const [value, setValue] = useState({ username: "", password: "" });
 
-    return <Navigate to={config.LOGIN_REDIRECT} />;
-  }
+  useEffect(() => {
+    if (isSuccess) {
+      // set the token in the state
+      dispatch(setToken(data));
+      navigate(config.LOGIN_REDIRECT);
+    }
+  }, [isSuccess, data, dispatch, navigate]);
 
-  const handleSubmitlogin = (e) => {
+  const handleInput = (e) => {
+    setValue({ ...value, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    retrieveToken({ username, password });
+    retrieveToken(value);
   };
 
   return (
     <div>
       {isLoading && <h1>Is Loading...</h1>}
       {error && <h1>Is error...{JSON.stringify(error)}</h1>}
-      {autToken.token && <p> {JSON.stringify(autToken)}</p>}
+      {autToken.token && <p> Already authenticated!</p>}
 
-      <form onSubmit={handleSubmitlogin}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={username}
+          value={value.username}
+          name="username"
           placeholder="Enter Username"
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={handleInput}
         />
         <br />
         <input
           type="password"
-          value={password}
+          name="password"
+          value={value.password}
           placeholder="Enter Password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleInput}
         />
         <br />
         <input type="submit" value="Login" />

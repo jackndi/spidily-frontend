@@ -10,8 +10,8 @@ import { setToken } from "./features/auth/tokenSlice";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./utils/PrivateRoute";
 import Login from "./pages/auth/Login";
-import Header from "./components/Header";
 import NotFound from "./pages/auth/NotFound";
+import Header from "./components/Header";
 
 // Authentication
 // Set token stored in the local storage
@@ -28,7 +28,7 @@ ReactDOM.render(
       <Provider store={store}>
         <Header />
         <Routes>
-          <Route path="/" element={<PrivateRoute />}>
+          <Route element={<PrivateRoute />}>
             <Route path="/" element={<App />} />
           </Route>
           <Route path="/login" element={<Login />} />

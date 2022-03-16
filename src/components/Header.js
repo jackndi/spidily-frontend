@@ -1,10 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { removeToken } from "../features/auth/tokenSlice";
 
 function Header() {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.token.token);
 
   const handleLogout = () => {
     dispatch(removeToken());
@@ -14,9 +15,11 @@ function Header() {
     <div>
       <ul>
         <li>Company Logo</li>
-        <li>
-          <button onClick={handleLogout}>logout</button>
-        </li>
+        {isAuthenticated && (
+          <li>
+            <button onClick={handleLogout}>logout</button>
+          </li>
+        )}
       </ul>
     </div>
   );
