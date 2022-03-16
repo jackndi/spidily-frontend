@@ -8,6 +8,10 @@ import { Provider } from "react-redux";
 import { setToken } from "./features/auth/tokenSlice";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./utils/PrivateRoute";
+import Login from "./pages/auth/Login";
+import Header from "./components/Header";
+import NotFound from "./pages/auth/NotFound";
 
 // Authentication
 // Set token stored in the local storage
@@ -22,8 +26,13 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
+        <Header />
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<PrivateRoute />}>
+            <Route path="/" element={<App />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Provider>
     </BrowserRouter>

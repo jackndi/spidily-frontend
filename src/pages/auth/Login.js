@@ -4,6 +4,8 @@ import { useRetrieveTokenMutation } from "../../services/auth/tokenAPI";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../../features/auth/tokenSlice";
+import { Navigate } from "react-router-dom";
+import config from "../../config";
 
 function Login() {
   const [retrieveToken, { isLoading, data, error, isSuccess }] =
@@ -17,10 +19,10 @@ function Login() {
 
   // set token local storage
   if (isSuccess) {
-    // Set the token on local storage
-    localStorage.setItem("spidily-auth", JSON.stringify(data));
     // set the token in the state
     dispatch(setToken(data));
+
+    return <Navigate to={config.LOGIN_REDIRECT} />;
   }
 
   const handleSubmitlogin = (e) => {
