@@ -7,10 +7,11 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import { setToken } from "./features/auth/tokenSlice";
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 // Authentication
 // Set token stored in the local storage
 const token = store.getState().token;
-console.log("index.js : ", token);
 if (!token.token) {
   // attempt to look for it in Local Storage
   const localToken = localStorage.getItem("spidily-auth");
@@ -19,9 +20,13 @@ if (!token.token) {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <Routes>
+          <Route path="/" element={<App />} />
+        </Routes>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

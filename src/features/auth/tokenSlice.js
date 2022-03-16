@@ -9,8 +9,6 @@ export const tokenSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action) => {
-      console.log("state ", state);
-      console.log("action ", action);
       state.token = action.payload;
     },
     removeToken: (state) => {
